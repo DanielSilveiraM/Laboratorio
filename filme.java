@@ -19,7 +19,7 @@ class Lista {
     
     /*Insere um elemento na ultima posicao da lista. */
     public void inserirFim(filme x) throws Exception {
- 
+
        //validar insercao
        if(n >= array.length){
           throw new Exception("Erro ao inserir!");
@@ -29,26 +29,38 @@ class Lista {
        n++;
     }
  
- 
+    public void swap(int i, int j) {
+        filme temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+
+
     public void sort() {
         for (int i = 0; i < (n - 1); i++) {
-        String title = array[i].getTitulo();
-        String comparador = array[i+1].getTitulo();
+        int menor=i;
+        int k=0;
+        String title = array[menor].getTitulo();
+        
+        //String comparador = array[i+1].getTitulo();
             for (int j = (i + 1); j < n; j++){
-                if (title.charAt(j) > comparador.charAt(j)){
-                title = comparador;
+                String comparador = array[j].getTitulo();
+                if(title.charAt(k) > comparador.charAt(k)){
+                    menor = j;
+                }
+                else if(title.charAt(k) == comparador.charAt(k) && k < title.length()){
+                    k++;
                 }
             }
+            swap(menor, i);
         }
    }
-    
 
 
     public void imprimirLista(){
         for(int i=0 ; i<n ; i++){
             array[i].imprimeDados();
         }
-
     }
 }
 
@@ -373,6 +385,8 @@ class filme{
         //Lendo os filmes e armazenando no array
         while(!tituloFilme.equals("FIM")){
 
+            MyIO.println(tituloFilme);
+
             novoFilme.readDados(tituloFilme);
             try {
                 listaFilme.inserirFim(novoFilme);
@@ -385,7 +399,6 @@ class filme{
 
         listaFilme.sort();
 
-        listaFilme.imprimirLista();
-
+        //listaFilme.imprimirLista();
     }
 }
