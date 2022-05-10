@@ -40,11 +40,11 @@ class Lista {
         for (int i = 0; i < (n - 1); i++) {
         int menor=i;
         int k=0;
-        String title = array[menor].getTitulo();
-        
         //String comparador = array[i+1].getTitulo();
             for (int j = (i + 1); j < n; j++){
                 String comparador = array[j].getTitulo();
+                String title = array[menor].getTitulo();
+                
                 if(title.charAt(k) > comparador.charAt(k)){
                     menor = j;
                 }
@@ -384,8 +384,6 @@ class filme{
 
         //Lendo os filmes e armazenando no array
         while(!tituloFilme.equals("FIM")){
-
-            MyIO.println(tituloFilme);
 
             novoFilme.readDados(tituloFilme);
             try {
