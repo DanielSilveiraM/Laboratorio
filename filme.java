@@ -9,7 +9,7 @@ import java.io.IOException;
 class Lista {
     private filme[] array;
     private int n;
- 
+    
  
     public Lista (int tamanho){
        array = new filme[tamanho];
@@ -37,24 +37,63 @@ class Lista {
 
 
     public void sort() {
-        for (int i = 0; i < (n - 1); i++) {
-        int menor=i;
-        int k=0;
-        //String comparador = array[i+1].getTitulo();
-            for (int j = (i + 1); j < n; j++){
-                String comparador = array[j].getTitulo();
-                String title = array[menor].getTitulo();
-                
-                if(title.charAt(k) > comparador.charAt(k)){
-                    menor = j;
-                }
-                else if(title.charAt(k) == comparador.charAt(k) && k < title.length()){
-                    k++;
-                }
-            }
-            swap(menor, i);
-        }
+      //Alterar o vetor ignorando a posicao zero
+      String[] tmp = new String[n+1];
+      for(int i = 0; i < n; i++){
+         tmp[i+1] = array[i].getGenero();
+      }
+      array = tmp;
+
+      //Contrucao do heap
+      for(int tamHeap = 2; tamHeap <= n; tamHeap++){
+         construir(tamHeap);
+      }
+
+      //Ordenacao propriamente dita
+      int tamHeap = n;
+      while(tamHeap > 1){
+         swap(1, tamHeap--);
+         reconstruir(tamHeap);
+      }
+
+      //Alterar o vetor para voltar a posicao zero
+      tmp = array;
+      array = new String[n];
+      for(int i = 0; i < n; i++){
+         array[i] = tmp[i+1];
+      }
    }
+
+    public void construir(int tamHeap){
+      for(int i = tamHeap; i > 1 && array[i].getGenero.compareTo(array[i/2]) > array[i/2].compareTo(array[i]); i /= 2){
+         swap(i, i/2);
+      }
+   }
+
+
+   public void reconstruir(int tamHeap){
+      int i = 1;
+      while(i <= (tamHeap/2)){
+         String filho = getMaiorFilho(i, tamHeap);
+         if(array[i] < array[filho]){
+            swap(i, filho);
+            i = filho;
+         }else{
+            i = tamHeap;
+         }
+      }
+   }
+
+   public int getMaiorFilho(int i, int tamHeap){
+      int filho;
+      if (2*i == tamHeap || array[2*i] > array[2*i+1]){
+         filho = 2*i;
+      } else {
+         filho = 2*i + 1;
+      }
+      return filho;
+   }
+}
 
 
     public void imprimirLista(){
@@ -374,29 +413,30 @@ class filme{
 
         MyIO.setCharset("utf-8");
 
-        String tituloFilme = "";
+        String dataFilme = "";
         filme novoFilme = new filme();
         Lista listaFilme = new Lista(100);
         
 
-        tituloFilme = MyIO.readLine();
+        dataFilme = MyIO.readLine();
         
 
         //Lendo os filmes e armazenando no array
-        while(!tituloFilme.equals("FIM")){
+        while(!dataFilme.equals("FIM")){
 
-            novoFilme.readDados(tituloFilme);
+            novoFilme.readDados(dataFilme);
             try {
                 listaFilme.inserirFim(novoFilme);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            tituloFilme = MyIO.readLine();
+            dataFilme = MyIO.readLine();
         }
 
+        
         listaFilme.sort();
 
-        //listaFilme.imprimirLista();
+        listaFilme.imprimirLista();
     }
 }
