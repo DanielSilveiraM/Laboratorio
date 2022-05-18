@@ -38,10 +38,11 @@ class Lista {
 
     public void sort() {
       //Alterar o vetor ignorando a posicao zero
-      String[] tmp = new String[n+1];
+      filme[] tmp = new filme[n+1];
       for(int i = 0; i < n; i++){
-         tmp[i+1] = array[i].getGenero();
+         tmp[i+1] = array[i];
       }
+
       array = tmp;
 
       //Contrucao do heap
@@ -58,14 +59,14 @@ class Lista {
 
       //Alterar o vetor para voltar a posicao zero
       tmp = array;
-      array = new String[n];
+      array = new filme[n];
       for(int i = 0; i < n; i++){
          array[i] = tmp[i+1];
       }
    }
 
     public void construir(int tamHeap){
-      for(int i = tamHeap; i > 1 && array[i].getGenero.compareTo(array[i/2]) > array[i/2].compareTo(array[i]); i /= 2){
+      for(int i = tamHeap; i > 1 && array[i].getGenero().compareTo(array[i/2].getGenero()) >= array[i/2].getTitulo().compareTo(array[i].getGenero()); i /= 2){
          swap(i, i/2);
       }
    }
@@ -74,8 +75,8 @@ class Lista {
    public void reconstruir(int tamHeap){
       int i = 1;
       while(i <= (tamHeap/2)){
-         String filho = getMaiorFilho(i, tamHeap);
-         if(array[i] < array[filho]){
+         int filho = getMaiorFilho(i, tamHeap);
+         if(array[i].getGenero().compareTo(array[filho].getGenero()) <= array[filho].getGenero().compareTo(array[i].getGenero())){
             swap(i, filho);
             i = filho;
          }else{
@@ -85,16 +86,14 @@ class Lista {
    }
 
    public int getMaiorFilho(int i, int tamHeap){
-      int filho;
-      if (2*i == tamHeap || array[2*i] > array[2*i+1]){
-         filho = 2*i;
-      } else {
-         filho = 2*i + 1;
-      }
-      return filho;
+        int filho;
+        if (2*i == tamHeap || array[2*i].getGenero().compareTo(array[2*i+1].getGenero()) >= array[2*i+1].getGenero().compareTo(array[2*i].getGenero())){
+            filho = 2*i;
+        } else {
+            filho = 2*i + 1;
+        }
+        return filho;
    }
-}
-
 
     public void imprimirLista(){
         for(int i=0 ; i<n ; i++){
