@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;  
@@ -14,6 +15,7 @@ class No {
     
     //Construtor da classe.
     public No(filme elemento){
+        this(elemento, null, null);
     }
 
     
@@ -38,28 +40,34 @@ class ArvoreBinaria {
 		raiz = null;
 	}
 
-
 	// Metodo publico iterativo para pesquisar elemento.
-	public boolean pesquisar(filme x) {
+	public boolean pesquisar(String x) {
+        MyIO.println(x);
+        MyIO.print("=>raiz");
 		return pesquisar(x, raiz);
 	}
 
-	
 	//Metodo privado recursivo para pesquisar elemento.
-	private boolean pesquisar(filme x, No i) {
+	private boolean pesquisar(String x, No i) {
       boolean resp;
-		if (i == null) {
-         resp = false;
 
-      } else if (x.getTitulo().compareTo(i.elemento.getTitulo()) == i.elemento.getTitulo().compareTo(x.getTitulo())) {
-         resp = true;
+		if (i == null){
+            MyIO.println(" NAO");
+            resp = false;
+        } 
+        else if (x.equals(i.elemento.getTitulo())) {
+            MyIO.println(" SIM");
+            resp = true;
+        } 
+        else if (x.compareTo(i.elemento.getTitulo()) < 0) {
+            MyIO.print(" esq");
+            resp = pesquisar(x, i.esq);
 
-      } else if (x.getTitulo().compareTo(i.elemento.getTitulo()) < i.elemento.getTitulo().compareTo(x.getTitulo())) {
-         resp = pesquisar(x, i.esq);
-
-      } else {
-         resp = pesquisar(x, i.dir);
-      }
+        } 
+        else {
+            MyIO.print(" dir");
+            resp = pesquisar(x, i.dir);
+        }
       return resp;
 	}
 
@@ -117,82 +125,40 @@ class ArvoreBinaria {
 		}
 	}
 
-
-	
 	//Metodo publico iterativo para inserir elemento.
-	public void inserir(filme x) throws Exception {
+	public void inserir(filme x) throws Exception { 
 		raiz = inserir(x, raiz);
 	}
 
-	
 	//Metodo privado recursivo para inserir elemento.
-	private No inserir(filme x, No i) throws Exception {
+	private No inserir(filme x, No i) throws Exception{
 		if (i == null) {
-         i = new No(x);
-
-      } else if (x.getTitulo().compareTo(i.elemento.getTitulo()) < i.elemento.getTitulo().compareTo(x.getTitulo())) {
-         i.esq = inserir(x, i.esq);
-
-      } else if (x.getTitulo().compareTo(i.elemento.getTitulo()) > i.elemento.getTitulo().compareTo(x.getTitulo())) {
-         i.dir = inserir(x, i.dir);
-
-      } else {
-         throw new Exception("Erro ao inserir!");
-      }
-
+            i = new No(x);
+        } 
+        else if(x.getTitulo().compareTo(i.elemento.getTitulo()) < 0) {
+            i.esq = inserir(x, i.esq);
+        }   
+        else if (x.getTitulo().compareTo(i.elemento.getTitulo()) > 0) {
+            i.dir = inserir(x, i.dir);
+        }      
+        else {
+            throw new Exception("Erro ao inserir!");
+        }
 		return i;
 	}
-
-	
-	//Metodo publico para inserir elemento.
-	public void inserirPai(filme x) throws Exception {
-      if(raiz == null){
-         raiz = new No(x);
-      } else if(x.getTitulo().compareTo(raiz.elemento.getTitulo()) < raiz.elemento.getTitulo().compareTo(x.getTitulo())){
-		   inserirPai(x, raiz.esq, raiz);
-      } else if(x.getTitulo().compareTo(raiz.elemento.getTitulo()) > raiz.elemento.getTitulo().compareTo(x.getTitulo())){
-		   inserirPai(x, raiz.dir, raiz);
-      } else {
-         throw new Exception("Erro ao inserirPai!");
-      }
-	}
-
-	
-	//Metodo privado recursivo para inserirPai elemento.
-	private void inserirPai(filme x, No i, No pai) throws Exception {
-		if (i == null) {
-         if(x.getTitulo().compareTo(pai.elemento.getTitulo()) < pai.elemento.getTitulo().compareTo(x.getTitulo())){
-            pai.esq = new No(x);
-         } else {
-            pai.dir = new No(x);
-         }
-      } else if (x.getTitulo().compareTo(i.elemento.getTitulo()) < i.elemento.getTitulo().compareTo(x.getTitulo())) {
-         inserirPai(x, i.esq, i);
-      } else if (x.getTitulo().compareTo(i.elemento.getTitulo()) > i.elemento.getTitulo().compareTo(x.getTitulo())) {
-         inserirPai(x, i.dir, i);
-      } else {
-         throw new Exception("Erro ao inserirPai!");
-      }
-	}
-
-
 	
 	//Metodo publico iterativo para remover elemento.
 	public void remover(String x) throws Exception {
 		raiz = remover(x, raiz);
 	}
 
-	
 	//Metodo privado recursivo para remover elemento.
 	private No remover(String x, No i) throws Exception {
-
 		if (i == null) {
          throw new Exception("Erro ao remover!");
-
-      } else if (x.compareTo(i.elemento.getTitulo()) < i.elemento.getTitulo().compareTo(x)) {
+      } else if (x.compareTo(i.elemento.getTitulo()) < 0) {
          i.esq = remover(x, i.esq);
-
-      } else if (x.compareTo(i.elemento.getTitulo()) > i.elemento.getTitulo().compareTo(x)) {
+      } else if (x.compareTo(i.elemento.getTitulo()) > 0) {
          i.dir = remover(x, i.dir);
 
       // Sem no a direita.
@@ -228,37 +194,6 @@ class ArvoreBinaria {
 		return j;
 	}
 
-	
-	//Metodo que retorna o maior elemento da árvore
-    public String getMaior(){
-      String resp = "";
-
-      if(raiz != null){
-         No i;
-         for(i = raiz; i.dir != null; i = i.dir);
-         resp = i.elemento.getTitulo();
-      }
-
-      return resp;
-   }
-
-
-	
-	//Metodo que retorna o menor elemento da árvore
-	public String getMenor(){
-      String resp = "";
-
-      if(raiz != null){
-         No i;
-         for(i = raiz; i.esq != null; i = i.esq);
-         resp = i.elemento.getTitulo();
-      }
-
-      return resp;
-   }
-
-
-	
 	//Metodo que retorna a altura da árvore
 	public int getAltura(){
       return getAltura(raiz, 0);
@@ -277,43 +212,6 @@ class ArvoreBinaria {
       }
       return altura;
    }
-
-
-	
-	//Metodo publico iterativo para remover elemento.
-	public void remover2(filme x) throws Exception {
-      if (raiz == null) {
-         throw new Exception("Erro ao remover2!");
-      } else if(x.getTitulo().compareTo(raiz.elemento.getTitulo()) < raiz.elemento.getTitulo().compareTo(x.getTitulo())){
-         remover2(x, raiz.esq, raiz);
-      } else if (x.getTitulo().compareTo(raiz.elemento.getTitulo()) > raiz.elemento.getTitulo().compareTo(x.getTitulo())){
-         remover2(x, raiz.dir, raiz);
-      } else if (raiz.dir == null) {
-         raiz = raiz.esq;
-      } else if (raiz.esq == null) {
-         raiz = raiz.dir;
-      } else {
-         raiz.esq = maiorEsq(raiz, raiz.esq);
-      }
-   }
-
-	
-	//Metodo privado recursivo para remover elemento.
-	private void remover2(filme x, No i, No pai) throws Exception {
-		if (i == null) {
-         throw new Exception("Erro ao remover2!");
-      } else if (x.getTitulo().compareTo(raiz.elemento.getTitulo()) < raiz.elemento.getTitulo().compareTo(x.getTitulo())) {
-         remover2(x, i.esq, i);
-      } else if (x.getTitulo().compareTo(raiz.elemento.getTitulo()) > raiz.elemento.getTitulo().compareTo(x.getTitulo())) {
-         remover2(x, i.dir, i);
-      } else if (i.dir == null) {
-         pai = i.esq;
-      } else if (i.esq == null) {
-         pai = i.dir;
-      } else {
-         i.esq = maiorEsq(i, i.esq);
-		}
-	}
 
    public String getRaiz() throws Exception {
       return raiz.elemento.getTitulo();
@@ -642,16 +540,12 @@ class filme{
 
 
     public static void main (String args[]) throws Exception{
-
         MyIO.setCharset("utf-8");
-
         String nomeFilme = "";
         filme novoFilme = new filme();
         ArvoreBinaria listaFilme = new ArvoreBinaria();
         
-
         nomeFilme = MyIO.readLine();
-        
 
         //Lendo os filmes e armazenando no array
         while(!nomeFilme.equals("FIM")){
@@ -659,7 +553,7 @@ class filme{
             novoFilme.readDados(nomeFilme);
             listaFilme.inserir(novoFilme);
 
-
+            novoFilme = new filme();
             nomeFilme = MyIO.readLine();
         }
 
@@ -676,10 +570,9 @@ class filme{
             //Inserir I
             if(nomeFilme.charAt(0) == 'I'){
                 nomeFilme = nomeFilme.substring(2);
-             
+            
                 filme nome = new filme();
                 nome.readDados(nomeFilme);
-
                 listaFilme.inserir(nome);
             }
 
@@ -692,6 +585,14 @@ class filme{
                 
             }
 
+        }
+
+        String pesquisaString = MyIO.readLine();
+
+        while(!pesquisaString.equals("FIM")){
+            
+            listaFilme.pesquisar(pesquisaString);
+            pesquisaString = MyIO.readLine();
         }
     }
 
