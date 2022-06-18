@@ -195,26 +195,22 @@ public class AVL {
 	}
 
 	private No rotacionarDir(No no) {
-		System.out.println("Rotacionar DIR(" + no.elemento + ")");
 		No noEsq = no.esq;
 		No noEsqDir = noEsq.dir;
-
+		
 		noEsq.dir = no;
 		no.esq = noEsqDir;
 		no.setNivel(); // Atualizar o nivel do no
 		noEsq.setNivel(); // Atualizar o nivel do noEsq
-
 		return noEsq;
 	}
 
 	private No rotacionarEsq(No no) {
-		System.out.println("Rotacionar ESQ(" + no.elemento + ")");
 		No noDir = no.dir;
 		No noDirEsq = noDir.esq;
 
 		noDir.esq = no;
 		no.dir = noDirEsq;
-
 		no.setNivel(); // Atualizar o nivel do no
 		noDir.setNivel(); // Atualizar o nivel do noDir
 		return noDir;
