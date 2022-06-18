@@ -171,10 +171,8 @@ public class AVL {
 	private No balancear(No no) throws Exception {
 		if (no != null) {
 			int fator = No.getNivel(no.dir) - No.getNivel(no.esq);
-			// Se balanceada
 			if (Math.abs(fator) <= 1) {
 				no.setNivel();
-			// Se desbalanceada para a direita
 			} else if (fator == 2) {
 				int fatorFilhoDir = No.getNivel(no.dir.dir) - No.getNivel(no.dir.esq);
 				// Se o filho a direita tambem estiver desbalanceado
@@ -182,10 +180,8 @@ public class AVL {
 					no.dir = rotacionarDir(no.dir);
 				}
 				no = rotacionarEsq(no);
-			// Se desbalanceada para a esquerda
 			} else if (fator == -2) {
 				int fatorFilhoEsq = No.getNivel(no.esq.dir) - No.getNivel(no.esq.esq);
-				// Se o filho a esquerda tambem estiver desbalanceado
 				if (fatorFilhoEsq == 1) {
 					no.esq = rotacionarEsq(no.esq);
 				}
