@@ -6,14 +6,11 @@
 public class AVL {
 	private No raiz; // Raiz da arvore.
 
-	/**
-	 * Construtor da classe.
-	 */
+	//Construtor da classe.
 	public AVL() {
 		raiz = null;
 	}
 
-	
 	//Metodo publico iterativo para pesquisar elemento.
 	
 	public boolean pesquisar(int x) {
